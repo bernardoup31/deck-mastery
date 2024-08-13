@@ -32,11 +32,13 @@ public class Player implements UserDetails {
 
     @NotBlank
     @Size(max = 20)
+    @Column(unique = true)
     private String username;
 
     @Getter
     @NotBlank
     @Size(max = 50)
+    @Column(unique = true)
     private String email;
 
     @NotBlank

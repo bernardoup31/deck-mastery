@@ -28,4 +28,14 @@ public class PlayerService implements UserDetailsService {
                 .or(() -> playerRepository.findByEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public void save(Player player) {
+        if (playerRepository.findByUsername(player.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        if (playerRepository.findByEmail(player.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        playerRepository.save(player);
+    }
 }
