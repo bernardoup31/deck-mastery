@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.games;
 
 public enum GameName {
     SUECA,

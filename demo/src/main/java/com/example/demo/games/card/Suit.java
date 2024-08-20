@@ -1,4 +1,4 @@
-package com.example.demo.model.card;
+package com.example.demo.games.card;
 
 public enum Suit {
     HEARTS,
