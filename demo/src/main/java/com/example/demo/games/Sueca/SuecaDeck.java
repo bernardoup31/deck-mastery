@@ -24,4 +24,13 @@ public class SuecaDeck extends Deck {
             }
         }
     }
+
+    public void cutDeck(int index){
+        cardList.addAll(cardList.subList(0, index));
+        cardList.removeAll(cardList.subList(0, index));
+    }
+
+    public void removeCard(Card card){
+        cardList.remove(card);
+    }
 }

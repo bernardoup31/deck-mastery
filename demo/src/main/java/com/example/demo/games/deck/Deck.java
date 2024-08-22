@@ -29,7 +29,17 @@ public abstract class Deck {
 
     public void remove(Card card){
         cardList.remove(card);
-        Suit suit = card.suit();
+        removeSuit(card.suit());
+    }
+
+    //Para que seja mais rápido, não é necessário procurar a carta na lista
+    public void removeTopCard(){
+        Card card = cardList.getFirst();
+        cardList.removeFirst();
+        removeSuit(card.suit());
+    }
+
+    private void removeSuit(Suit suit) {
         assert availableSuits.containsKey(suit);
         assert availableSuits.get(suit) > 0;
         availableSuits.put(suit, availableSuits.get(suit) - 1);

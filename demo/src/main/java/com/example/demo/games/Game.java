@@ -15,4 +15,6 @@ public interface Game {
     void showResults();
 
     void saveResults();
+
+    boolean isFinished();
 }
