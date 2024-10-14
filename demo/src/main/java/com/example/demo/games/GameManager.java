@@ -3,7 +3,9 @@ package com.example.demo.games;
 import com.example.demo.games.Sueca.SuecaPlayer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class GameManager<T extends GamePlayer> {
     protected SimpMessagingTemplate messagingTemplate;

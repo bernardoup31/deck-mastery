@@ -57,7 +57,6 @@ public class SuecaGame implements Game, Runnable {
         team1 = new SuecaTeam(players.get(0), players.get(2));
         team2 = new SuecaTeam(players.get(1), players.get(3));
         int random = (int) (Math.random() * 4);
-        deck.regenerateDeck();
         playerShuffling = players.get(random);
         playerCutting = getNextPlayer(getNextPlayer(playerShuffling));
         playerDistributing = getNextPlayer(playerCutting);
@@ -120,6 +119,22 @@ public class SuecaGame implements Game, Runnable {
 
     @Override
     public void run() {
+        try {
+            while (!isFinished()){
+                deck.shuffle();
+                suecaManager.sendMessage(playerCutting, SuecaMessages.CUT);
+                // wait for player to cut
+                suecaManager.sendMessage(playerDistributing, SuecaMessages.CHOOSEUPORDOWN);
 
+            }
+            showResults();
+            saveResults();
+            SuecaManager.removeGame(id);
+        }
+
+        catch (Exception e){
+            SuecaManager.removeGame(id);
+            e.printStackTrace();
+        }
     }
 }
