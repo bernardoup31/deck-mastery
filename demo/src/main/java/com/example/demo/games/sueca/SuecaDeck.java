@@ -1,4 +1,4 @@
-package com.example.demo.games.Sueca;
+package com.example.demo.games.sueca;
 
 import com.example.demo.games.card.Card;
 import com.example.demo.games.card.CardValue;
@@ -32,5 +32,9 @@ public class SuecaDeck extends Deck {
 
     public void removeCard(Card card){
         cardList.remove(card);
+    }
+
+    public Card getCard(int index){
+        return cardList.get(index);
     }
 }

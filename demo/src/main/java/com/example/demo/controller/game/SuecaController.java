@@ -1,7 +1,7 @@
 package com.example.demo.controller.game;
 
-import com.example.demo.games.Sueca.SuecaGame;
-import com.example.demo.games.Sueca.SuecaManager;
+import com.example.demo.games.sueca.SuecaGame;
+import com.example.demo.games.sueca.SuecaManager;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,7 +19,8 @@ public class SuecaController {
     }
 
     @MessageMapping("/sueca/{gameID}/cut")
-    public void cutDeck(@DestinationVariable UUID gameId, @Payload int cutIndex){
-        SuecaGame game = SuecaManager.getGame(gameId);
+    public void cutDeck(@DestinationVariable UUID gameID, @Payload int cutIndex){
+        SuecaGame game = suecaManager.getGame(gameID);
+        game.cut(cutIndex);
     }
 }

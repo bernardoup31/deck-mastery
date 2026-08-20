@@ -1,4 +1,4 @@
-package com.example.demo.games.Sueca;
+package com.example.demo.games.sueca;
 
 import lombok.Getter;
 import lombok.Setter;

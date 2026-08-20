@@ -1,34 +1,53 @@
-package com.example.demo.games.Sueca;
+package com.example.demo.games.sueca;
 
 import com.example.demo.games.GameManager;
-import com.example.demo.games.GamePlayer;
+import com.example.demo.games.GameQueue;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @Service
-public class SuecaManager extends GameManager<SuecaPlayer> {
+public class SuecaManager extends GameManager<SuecaPlayer> implements GameQueue<SuecaPlayer> {
 
-    private static final ConcurrentHashMap<UUID, SuecaGame> games = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, SuecaGame> games = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<SuecaPlayer, LocalDateTime> waitList = new ConcurrentHashMap<>();
 
     public SuecaManager(SimpMessagingTemplate messagingTemplate) {
         super(messagingTemplate);
     }
+    @Override
+    public void addPlayerToQueue(SuecaPlayer player) {
+        waitList.put(player, LocalDateTime.now());
+    }
 
-    public static void addGame(UUID id, SuecaGame game) {
+    @Override
+    public void removePlayerFromQueue(SuecaPlayer player) {
+        waitList.remove(player);
+    }
+
+    @Override
+    public void checkForTimeout(SuecaPlayer player) {
+
+    }
+
+    @Override
+    public boolean isReadyToStart() {
+        return false;
+    }
+
+    public void addGame(UUID id, SuecaGame game) {
         games.put(id, game);
     }
 
-    public static SuecaGame getGame(UUID id) {
+    public SuecaGame getGame(UUID id) {
         return games.get(id);
     }
 
-    public static void removeGame(UUID id) {
+    public void removeGame(UUID id) {
         games.remove(id);
     }
 

@@ -13,7 +13,6 @@ public class PlayerService implements UserDetailsService {
 
     private final PlayerRepository playerRepository;
 
-    @Autowired
     public PlayerService(PlayerRepository userRepository) {
         this.playerRepository = userRepository;
     }

@@ -1,4 +1,4 @@
-package com.example.demo.games.Sueca;
+package com.example.demo.games.sueca;
 
 import com.example.demo.games.GamePlayer;
 import com.example.demo.games.deck.Deck;

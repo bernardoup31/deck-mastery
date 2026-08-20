@@ -1,14 +1,10 @@
-package com.example.demo.games.Sueca;
+package com.example.demo.games.sueca;
 
 import com.example.demo.games.Game;
 import com.example.demo.games.card.Card;
 import com.example.demo.games.card.CardValue;
-import com.example.demo.games.deck.Deck;
 import com.example.demo.games.deck.TableDeck;
-import com.example.demo.model.Player;
 import com.nimbusds.jose.util.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -129,11 +125,11 @@ public class SuecaGame implements Game, Runnable {
             }
             showResults();
             saveResults();
-            SuecaManager.removeGame(id);
+            suecaManager.removeGame(id);
         }
 
         catch (Exception e){
-            SuecaManager.removeGame(id);
+            suecaManager.removeGame(id);
             e.printStackTrace();
         }
     }

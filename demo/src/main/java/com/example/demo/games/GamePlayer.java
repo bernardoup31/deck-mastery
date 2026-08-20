@@ -16,6 +16,15 @@ public abstract class GamePlayer {
         this.hand = hand;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GamePlayer other) {
+            return this.id.equals(other.id);
+        } else {
+            return false;
+        }
+    }
+
     public void receiveCard(Card card){
         hand.add(card);
     }
