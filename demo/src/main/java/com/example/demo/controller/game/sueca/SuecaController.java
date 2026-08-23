@@ -1,7 +1,7 @@
-package com.example.demo.controller.game;
+package com.example.demo.controller.game.sueca;
 
 import com.example.demo.games.sueca.SuecaGame;
-import com.example.demo.games.sueca.SuecaManager;
+import com.example.demo.games.sueca.manager.SuecaGameManager;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -12,15 +12,15 @@ import java.util.UUID;
 @Controller
 public class SuecaController {
 
-    SuecaManager suecaManager;
+    SuecaGameManager suecaGameManager;
 
-    public SuecaController(SuecaManager suecaManager){
-        this.suecaManager = suecaManager;
+    public SuecaController(SuecaGameManager suecaGameManager){
+        this.suecaGameManager = suecaGameManager;
     }
 
     @MessageMapping("/sueca/{gameID}/cut")
     public void cutDeck(@DestinationVariable UUID gameID, @Payload int cutIndex){
-        SuecaGame game = suecaManager.getGame(gameID);
+        SuecaGame game = suecaGameManager.getGame(gameID);
         game.cut(cutIndex);
     }
 }

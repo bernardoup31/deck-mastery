@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.controller.utils.ControllerUtils;
 import com.example.demo.model.Role;
-import com.example.demo.model.auth.AuthenticationRequest;
+import com.example.demo.dto.auth.AuthenticationRequest;
 import com.example.demo.model.Player;
-import com.example.demo.model.auth.RegisterRequest;
+import com.example.demo.dto.auth.RegisterRequest;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.services.PlayerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,12 +31,12 @@ public class AuthController {
     @PostMapping("/login") // Para segurança, mudar a forma como é enviada a password, para evitar ataques man in the middle (enviar já encriptada)
     public ResponseEntity<String> login(@RequestBody AuthenticationRequest request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         }
         catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-        final UserDetails user = playerService.loadUserByUsername(request.getEmail());
+        final UserDetails user = playerService.loadUserByUsername(request.email());
         if(user!=null){
             return ResponseEntity.ok(jwtUtils.generateToken(user));
         }
@@ -47,8 +45,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        String passwordEncoded = new BCryptPasswordEncoder().encode(request.getPassword());
-        Player newPlayer = new Player(request.getUsername(), request.getEmail(), passwordEncoded, Role.USER);
+        String passwordEncoded = new BCryptPasswordEncoder().encode(request.password());
+        Player newPlayer = new Player(request.username(), request.email(), passwordEncoded, Role.USER);
         try{
             playerService.save(newPlayer);
         }

@@ -14,4 +14,8 @@ public abstract class GameManager<T extends GamePlayer> {
     public abstract void sendMessage(T player, Object message);
 
     public abstract void sendMessageToAll(List<T> players, Object message);
+
+    public abstract void sendMessageToAllExcept(List<T> players, T player, Object message);
+
+    public abstract void createGame(List<T> players);
 }

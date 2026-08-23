@@ -2,6 +2,7 @@ package com.example.demo.games;
 
 import com.example.demo.games.card.Card;
 import com.example.demo.games.deck.Deck;
+import com.example.demo.games.deck.HandDeck;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,9 @@ import lombok.Setter;
 @Setter
 public abstract class GamePlayer {
     private final Long id;
-    private Deck hand;
+    private HandDeck hand;
 
-    public GamePlayer(Long id, Deck hand){
+    public GamePlayer(Long id, HandDeck hand){
         this.id = id;
         this.hand = hand;
     }

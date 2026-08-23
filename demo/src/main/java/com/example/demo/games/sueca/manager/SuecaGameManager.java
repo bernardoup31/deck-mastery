@@ -1,46 +1,26 @@
-package com.example.demo.games.sueca;
+package com.example.demo.games.sueca.manager;
 
 import com.example.demo.games.GameManager;
-import com.example.demo.games.GameQueue;
+import com.example.demo.games.sueca.SuecaGame;
+import com.example.demo.games.sueca.SuecaPlayer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.*;
 
 @Service
-public class SuecaManager extends GameManager<SuecaPlayer> implements GameQueue<SuecaPlayer> {
+public class SuecaGameManager extends GameManager<SuecaPlayer> {
 
     private final ConcurrentHashMap<UUID, SuecaGame> games = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<SuecaPlayer, LocalDateTime> waitList = new ConcurrentHashMap<>();
 
-    public SuecaManager(SimpMessagingTemplate messagingTemplate) {
+    public SuecaGameManager(SimpMessagingTemplate messagingTemplate) {
         super(messagingTemplate);
     }
-    @Override
-    public void addPlayerToQueue(SuecaPlayer player) {
-        waitList.put(player, LocalDateTime.now());
-    }
 
-    @Override
-    public void removePlayerFromQueue(SuecaPlayer player) {
-        waitList.remove(player);
-    }
-
-    @Override
-    public void checkForTimeout(SuecaPlayer player) {
-
-    }
-
-    @Override
-    public boolean isReadyToStart() {
-        return false;
-    }
-
-    public void addGame(UUID id, SuecaGame game) {
-        games.put(id, game);
+    public void addGame(SuecaGame game) {
+        games.put(game.getId(), game);
     }
 
     public SuecaGame getGame(UUID id) {
@@ -63,6 +43,7 @@ public class SuecaManager extends GameManager<SuecaPlayer> implements GameQueue<
         }
     }
 
+    @Override
     public void sendMessageToAllExcept(List<SuecaPlayer> players, SuecaPlayer player, Object message) {
         for (SuecaPlayer p : players) {
             if (!p.equals(player)) {
@@ -71,8 +52,10 @@ public class SuecaManager extends GameManager<SuecaPlayer> implements GameQueue<
         }
     }
 
-    public Future<Integer> processCut(SuecaGame game, int cutIndex) {
-        CompletableFuture<Integer> futureIndex = new CompletableFuture<>();
-        return futureIndex;
+    @Override
+    public void createGame(List<SuecaPlayer> players) {
+        SuecaGame game = new SuecaGame(players);
+        addGame(game);
+
     }
 }

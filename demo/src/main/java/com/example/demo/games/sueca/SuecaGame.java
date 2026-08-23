@@ -4,15 +4,19 @@ import com.example.demo.games.Game;
 import com.example.demo.games.card.Card;
 import com.example.demo.games.card.CardValue;
 import com.example.demo.games.deck.TableDeck;
+import com.example.demo.games.sueca.manager.SuecaGameManager;
 import com.nimbusds.jose.util.Pair;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class SuecaGame implements Game, Runnable {
+public class SuecaGame implements Game {
 
+    @Getter
     private UUID id; // id of the game, for broadcasting purposes
+
     private final List<SuecaPlayer> players;
     private final HashMap<CardValue,Integer> cardsValue;
     private Pair<Card, SuecaPlayer> highestCard;
@@ -23,15 +27,13 @@ public class SuecaGame implements Game, Runnable {
     private SuecaPlayer playerShuffling;
     private SuecaPlayer playerCutting;
     private SuecaPlayer playerDistributing;
-    private SuecaManager suecaManager;
 
-    public SuecaGame(List<SuecaPlayer> players, SuecaManager suecaManager){
+    public SuecaGame(List<SuecaPlayer> players){
         this.players = players;
         this.id = UUID.randomUUID();
         this.cardsValue = new HashMap<>();
         this.deck = new SuecaDeck();
         this.table = new TableDeck();
-        this.suecaManager = suecaManager;
         initiateValues();
     }
 
@@ -74,14 +76,12 @@ public class SuecaGame implements Game, Runnable {
     public void distributeCards() {
         SuecaPlayer player = playerDistributing;
         for(int i = 0; i < 9; i++){
-            player.receiveCard(deck.topCard());
-            deck.remove(deck.topCard());
+            deck.dealCard(player);
         }
         for(int i = 0; i < 3; i++){
             player = getNextPlayer(player);
             for (int j = 0; j < 10; j++){
-                player.receiveCard(deck.topCard());
-                deck.remove(deck.topCard());
+                deck.dealCard(player);
             }
         }
     }
@@ -110,27 +110,6 @@ public class SuecaGame implements Game, Runnable {
         }
         else if (team.getRoundScore() >= 61){
             team.setTotalScore(team.getTotalScore() + 1);
-        }
-    }
-
-    @Override
-    public void run() {
-        try {
-            while (!isFinished()){
-                deck.shuffle();
-                suecaManager.sendMessage(playerCutting, SuecaMessages.CUT);
-                // wait for player to cut
-                suecaManager.sendMessage(playerDistributing, SuecaMessages.CHOOSEUPORDOWN);
-
-            }
-            showResults();
-            saveResults();
-            suecaManager.removeGame(id);
-        }
-
-        catch (Exception e){
-            suecaManager.removeGame(id);
-            e.printStackTrace();
         }
     }
 }
