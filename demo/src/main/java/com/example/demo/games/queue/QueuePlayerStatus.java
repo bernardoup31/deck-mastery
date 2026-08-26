@@ -1,4 +1,4 @@
-package com.example.demo.games;
+package com.example.demo.games.queue;
 
 // Quando um jogo é encontrado, todos precisam de aceitar (Passam do estado WAITING para READY_CHECK).
 // Quando um jogador aceita, passa para o estado ACCEPTED. Quando todos aceitarem, passam para o estado STARTING.
