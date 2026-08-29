@@ -7,6 +7,7 @@ import com.example.demo.model.Player;
 import com.example.demo.dto.auth.RegisterRequest;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.services.PlayerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/login") // Para segurança, mudar a forma como é enviada a password, para evitar ataques man in the middle (enviar já encriptada)
-    public ResponseEntity<String> login(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<String> login(@Valid @RequestBody AuthenticationRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         }
@@ -44,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
         String passwordEncoded = new BCryptPasswordEncoder().encode(request.password());
         Player newPlayer = new Player(request.username(), request.email(), passwordEncoded, Role.USER);
         try{
